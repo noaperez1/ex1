@@ -4,6 +4,9 @@
 
 #define INITIALIZED_TIMES 1
 
+//s - the char 
+//times - number of times that char appears
+//next - pointer to next node 
 typedef struct RLEList_t{
     char s;
     int times;
@@ -14,6 +17,7 @@ typedef struct RLEList_t{
 // is used in RLEListCreate and RLEListAppend
 static RLEList RLEList_new_node()
 {
+    //supposed to be free in noas func
     RLEList new_node = malloc(sizeof(new_node));
     if(!new_node)
     {
@@ -136,7 +140,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
         assert( runner_del && runner_del->next);
         runner_del->next = (runner_del->next)->next;
         runner_del = runner_del->next;
-        free(runner_del);
+        //free(runner_del);
         return RLE_LIST_SUCCESS;
     }
 }
