@@ -1,6 +1,7 @@
 #include "RLEList.h"
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #define INITIALIZED_TIMES 1
 
@@ -79,6 +80,16 @@ RLEList RLEListCreate()
     return head;
 }
 
+void RLEListDestroy(RLEList list)
+{
+    if (list==NULL)     //(if list->next==NULL) ?
+        return;
+    else {   
+        RLEListDestroy(list->next);
+        free(list);
+    }
+}
+
 RLEListResult RLEListAppend(RLEList list, char value)
 {
     RLEList last= last_node(list);
@@ -107,6 +118,22 @@ RLEListResult RLEListAppend(RLEList list, char value)
         last->next = new_node;
         return RLE_LIST_SUCCESS;
     }
+}
+
+int RLEListSize(RLEList list)
+{
+    if (list==NULL)
+        return 0;
+    RLEList temp = list->next;
+    int counter=1;
+    
+    while (temp!=NULL)
+    {
+        counter++;
+        temp= temp->next;
+    }
+
+    return counter;
 }
 
 RLEListResult RLEListRemove(RLEList list, int index)
@@ -154,6 +181,34 @@ RLEListResult RLEListRemove(RLEList list, int index)
     }
 }
 
+char RLEListGet(RLEList list, int index, RLEListResult *result)
+{
+    if (list==NULL)
+        return RLE_LIST_NULL_ARGUMENT;
+    if (RLEListSize(list)<index+1)
+        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+
+    int counter=0;
+    RLEList temp = list;
+
+    while (counter!=index)
+        {
+            temp= temp->next;
+            counter++; 
+        } 
+
+    char letter= temp->s;
+    if (letter==NULL)        
+        return 0;
+    else 
+    {
+        *result= letter;
+        return RLE_LIST_SUCCESS;
+    }
+
+
+}
+
 RLEListResult RLEListMap(RLEList list, MapFunction map_function)
 {
     if( !list || !map_function )
@@ -197,4 +252,9 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
         list = list->next ;  
     }
     return RLE_LIST_SUCCESS;  
+}
+
+char* RLEListExportToString(RLEList list, RLEListResult* result)
+{
+
 }
