@@ -4,21 +4,27 @@
 
 #define INITIALIZED_TIMES 1
 
+
+//----------definitions---------------------------------------------------------------------//
 //s - the char 
 //times - number of times that char appears
 //next - pointer to next node 
+
+
+//------------help_func---------------------------------------------------------------------//
+
 typedef struct RLEList_t{
     char s;
     int times;
     struct RLEList_t *next;
 }*RLEList;
 
-//creates new RLEList node
-// is used in RLEListCreate and RLEListAppend
+/*this func creates new empty RLEList node
+is used in RLEListCreate and RLEListAppend */
 static RLEList RLEList_new_node()
 {
     //supposed to be free in noas func
-    RLEList new_node = malloc(sizeof(new_node));
+    RLEList new_node = malloc(sizeof(*new_node));   // add * in sizeof
     if(!new_node)
     {
         return NULL;
@@ -27,21 +33,6 @@ static RLEList RLEList_new_node()
     new_node->times=0;
 	new_node->next = NULL;
 	return new_node;
-}
-
-RLEList RLEListCreate()
-{
-    RLEList head= RLEList_new_node();
-    if(!head)
-    {
-        return NULL;
-    }
-    head->next = RLEList_new_node() ;
-    if(!head->next)
-    {
-        return NULL;
-    }
-    return head;
 }
 
 //gets head of list and returns last node in it (if null returns null)
@@ -68,6 +59,24 @@ static void initialize(RLEList last, char value)
     assert( last && value );
     last->s = value;
     last->times = INITIALIZED_TIMES;
+}
+
+
+//--------func---------------------------------------------------------------------//
+
+RLEList RLEListCreate()
+{
+    RLEList head= RLEList_new_node();
+    if(!head)
+    {
+        return NULL;
+    }
+    head->next = RLEList_new_node() ;
+    if(!(head->next))
+    {
+        return NULL;
+    }
+    return head;
 }
 
 RLEListResult RLEListAppend(RLEList list, char value)
