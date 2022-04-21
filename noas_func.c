@@ -206,7 +206,6 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
         return RLE_LIST_SUCCESS;
     }
 
-
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function)
