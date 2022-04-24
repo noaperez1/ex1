@@ -293,15 +293,19 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     } 
 
     if (p_arr==arr)
+    {
+        free(arr);
         return RLE_LIST_NULL_ARGUMENT;
+    }
     else
+    {
+        int i=0;
+        while (arr+i!=p_arr)
         {
-            int i=0;
-            while (arr+i!=p_arr)
-            {
-                *result=arr[i];
-                result++;
-            }
-        return RLE_LIST_SUCCESS;
+            *result=arr[i];
+            result++;
         }
+        free(arr);
+        return RLE_LIST_SUCCESS;
+    }
 }
