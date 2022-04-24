@@ -255,5 +255,43 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
 
 char* RLEListExportToString(RLEList list, RLEListResult* result)
 {
+    int len= RLEListSize(list);
+    char* arr= (char*)malloc(4*len*sizeof(char));
+    char* p_arr=arr[0];
 
+    int counter=0;
+    char temp_letter=list->s;
+
+    while(list!=NULL)
+    {
+        if (temp_letter==list->s)
+        {
+            counter++;
+            list= list->next;
+        }
+        else if(temp_letter!='\0')  //איך לסמל שהערך ריק? המטרה לבדוק שהערך חוקי
+        {
+            *p_arr = temp_letter;
+            p_arr++;
+            sprintf(p_arr,"%d", counter);
+
+           //find the num of chars that is used to symbolize the len 
+            int temp_len_num=0;
+            do{
+                counter/=10;
+                temp_len_num++;
+            }   while(counter!=0);
+            
+            p_arr+=temp_len_num;
+            *p_arr="/n";
+            p_arr+=2;
+
+            temp_letter= list->s;
+            counter=1;
+            list= list->next;
+            
+
+        }
+    } 
+    
 }

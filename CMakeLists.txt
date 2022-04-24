@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(EX1 VERSION 0.1.0 LANGUAGES C)
+set (MTM_FLAG_DEBAG"-std=c99 --pedantic-errors -wall -werror")
+set(MTM_FLAG_RELEASE "${MTM_FLAG_DEBAG} -DNDEBUG")
+set(CMAKE_C_FLAGS ${MTM_FLAGS_DEBUG})
+add_executable( test.c)
