@@ -309,7 +309,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         temp_len_num=0;
         do
         {
-            temp_times/=10;
+            temp_times/=10;         //לשנות בדפיין
             temp_len_num++;
         }   while(temp_times!=0);
 
@@ -317,7 +317,12 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         temp=temp->next;
     }
 
-    char* arr= (char*)malloc(counter+1+(3*count_nodes)*sizeof(char));
+    char* arr= (char*)malloc(counter+1+(3*count_nodes)*sizeof(char));   //לשנות בדפיין
+    if(arr==NULL)
+    {
+        printf("error allocate memory");
+        return NULL;
+    }
     char* p_arr=arr;
     temp= list->next;
     for(int i=0; i<count_nodes;i++)
@@ -333,64 +338,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         }   while(temp_times!=0);
         p_arr+=temp_len_num;
         *p_arr='\n';
-        p_arr+=2;
+        p_arr+=2;   //להוסיף בדפיין
     }
 }
-   
-    /*
-    //-------was----------------------------------------------------------------------//
-    int len= RLEListSize(list);
-    char* arr= (char*)malloc(4*len*sizeof(char));
-    char* p_arr=arr[0];
-
-    int counter=0;
-    char temp_letter=list->s;
-
-    while(list!=NULL)
-    {
-        if (temp_letter==list->s)
-        {
-            counter++;
-            list= list->next;
-        }
-        else if(temp_letter!='\0')  //איך לסמל שהערך ריק? המטרה לבדוק שהערך חוקי
-        {
-            *p_arr = temp_letter;
-            p_arr++;
-            sprintf(p_arr,"%d", counter);
-
-           //find the num of chars that is used to symbolize the len 
-            int temp_len_num=0;
-            do{
-                counter/=10;
-                temp_len_num++;
-            }   while(counter!=0);
-            
-            p_arr+=temp_len_num;
-            *p_arr="/n";
-            p_arr+=2;
-
-            temp_letter= list->s;
-            counter=1;
-            list= list->next;
-        }
-    } 
-
-    if (p_arr==arr)
-    {
-        free(arr);
-        return RLE_LIST_NULL_ARGUMENT;
-    }
-    else
-    {
-        int i=0;
-        while (arr+i!=p_arr)
-        {
-            *result=arr[i];
-            result++;
-        }
-        free(arr);
-        return RLE_LIST_SUCCESS;
-    }
-}
-*/
