@@ -82,9 +82,12 @@ RLEList RLEListCreate()
 
 void RLEListDestroy(RLEList list)
 {
-    if (list==NULL)     //(if list->next==NULL) ?
+    if (list==NULL)    //(if list->next==NULL) ?
+        {
         return;
-    else {   
+        }
+    else 
+    {   
         RLEListDestroy(list->next);
         free(list);
     }
@@ -104,7 +107,7 @@ RLEListResult RLEListAppend(RLEList list, char value)
     }
     else if ( last->s == value)
     {
-        last->times ++ ;
+        last->times++ ;
         return RLE_LIST_SUCCESS;
     }
     else
@@ -123,17 +126,22 @@ RLEListResult RLEListAppend(RLEList list, char value)
 int RLEListSize(RLEList list)
 {
     if (list==NULL)
-        return 0;
-    RLEList temp = list->next;
-    int counter=1;
-    
-    while (temp!=NULL)
     {
-        counter++;
-        temp= temp->next;
+        return -1;
     }
-
-    return counter;
+    else
+    {
+        RLEList temp = list->next;
+        int counter=list->times;
+    
+        while (temp!=NULL)
+        {
+            counter+=temp->times;
+            temp= temp->next;
+        }
+        return counter; 
+    }
+    
 }
 
 RLEListResult RLEListRemove(RLEList list, int index)
@@ -151,7 +159,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
     int count_nodes= 0;
     RLEList runner = list ;
     assert(runner);
-    while (count < runner->times)
+    while (count < index)
     {
         count = count + runner->times ;
         runner = runner->next ; 
@@ -174,36 +182,57 @@ RLEListResult RLEListRemove(RLEList list, int index)
             runner_del = runner_del->next ;
         }
         assert( runner_del && runner_del->next);
+        RLEList temp= runner_del->next;
         runner_del->next = (runner_del->next)->next;
-        runner_del = runner_del->next;
-        //free(runner_del);
+        free(temp);
         return RLE_LIST_SUCCESS;
     }
 }
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
-    if (list==NULL)
-        return RLE_LIST_NULL_ARGUMENT;
-    if (RLEListSize(list)<index+1)
-        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
-
-    int counter=0;
+    if (result!=NULL)
+    {
+        if (list==NULL)
+        {
+            *result = RLE_LIST_NULL_ARGUMENT;
+            return '\0';
+        }
+        else if (RLEListSize(list)<index+1 || index<=0)
+        {
+            *result= RLE_LIST_INDEX_OUT_OF_BOUNDS;
+            return '\0';
+        }
+    }
+    else if (list==NULL || RLEListSize(list)<index+1 || index<=0)
+    {
+        return '\0';
+    }
+    
+    int counter=list->times;
     RLEList temp = list;
 
-    while (counter!=index)
+    while (counter<index)
         {
             temp= temp->next;
-            counter++; 
+            counter+=temp->times;  
         } 
-
-    char letter= temp->s;
-    if (letter==NULL)        
-        return 0;
+    
+    if (temp->s ==NULL)  
+    {
+       return '\0'; 
+    }          
     else 
     {
-        *result= letter;
-        return RLE_LIST_SUCCESS;
+        if (result!=NULL)
+        {
+            *result= RLE_LIST_SUCCESS;
+            return temp->s;
+        }
+        else
+        {
+            return temp->s;
+        }
     }
 
 }
@@ -255,6 +284,61 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
 
 char* RLEListExportToString(RLEList list, RLEListResult* result)
 {
+    if (list==NULL)
+    {
+        if (result==NULL)
+        {
+            return NULL;
+        }
+        else
+        {
+            *result= RLE_LIST_NULL_ARGUMENT;
+            return NULL;
+        }
+    }
+    
+    int counter=0, count_nodes= 0, //counting nodes without the first
+    temp_len_num=0, temp_times=0;
+    RLEList temp= list->next;
+    
+    while(temp!=NULL)
+    {
+        //converting int to char
+        count_nodes++;
+        temp_times=temp->times;
+        temp_len_num=0;
+        do
+        {
+            temp_times/=10;
+            temp_len_num++;
+        }   while(temp_times!=0);
+
+        counter +=temp_len_num;
+        temp=temp->next;
+    }
+
+    char* arr= (char*)malloc(counter+1+(3*count_nodes)*sizeof(char));
+    char* p_arr=arr;
+    temp= list->next;
+    for(int i=0; i<count_nodes;i++)
+    {
+        *p_arr= temp->s;
+        p_arr++;
+        sprintf(p_arr,"%d", temp->times);
+        temp_len_num=0, temp_times=temp->times;
+        do
+        {
+            temp_times/=10;
+            temp_len_num++;
+        }   while(temp_times!=0);
+        p_arr+=temp_len_num;
+        *p_arr='\n';
+        p_arr+=2;
+    }
+}
+   
+    /*
+    //-------was----------------------------------------------------------------------//
     int len= RLEListSize(list);
     char* arr= (char*)malloc(4*len*sizeof(char));
     char* p_arr=arr[0];
@@ -309,3 +393,4 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         return RLE_LIST_SUCCESS;
     }
 }
+*/
