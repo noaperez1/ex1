@@ -45,14 +45,6 @@ int main()
     RLEList P= last_node (one);
     printf(" is %c\n", P->s);
     
-    //RLEListResult X;
-    //RLEListAppend(one,'C');
-    //RLE_LIST_NULL_ARGUMENT = 2
-    //int x = RLEListAppend(NULL,'\0');
-    //printf("%d",X);
-    
-    //printf("%c\n", two->next->next->s);
-   // printf("%d\n", two->next->next->times);
     
     RLEListDestroy(one);
 
@@ -167,6 +159,7 @@ RLEListResult RLEListAppend(RLEList list, char value)
         return RLE_LIST_SUCCESS;
     }
 }
+
 /*
 int RLEListSize(RLEList list)
 {
