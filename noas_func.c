@@ -4,6 +4,11 @@
 #include <string.h>
 
 #define INITIALIZED_TIMES 1
+#define TEN 10
+#define THREE 3
+#define TWO 2
+
+
 
 
 //----------definitions---------------------------------------------------------------------//
@@ -309,7 +314,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         temp_len_num=0;
         do
         {
-            temp_times/=10;         //לשנות בדפיין
+            temp_times/=TEN;        
             temp_len_num++;
         }   while(temp_times!=0);
 
@@ -317,7 +322,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         temp=temp->next;
     }
 
-    char* arr= (char*)malloc(counter+1+(3*count_nodes)*sizeof(char));   //לשנות בדפיין
+    char* arr= (char*)malloc(counter+1+(THREE*count_nodes)*sizeof(char));   
     if(arr==NULL)
     {
         printf("error allocate memory");
@@ -333,11 +338,11 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         temp_len_num=0, temp_times=temp->times;
         do
         {
-            temp_times/=10;
+            temp_times/=TEN;
             temp_len_num++;
         }   while(temp_times!=0);
         p_arr+=temp_len_num;
         *p_arr='\n';
-        p_arr+=2;   //להוסיף בדפיין
+        p_arr+=TWO; 
     }
 }
