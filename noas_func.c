@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <stdio.h>
 
 #define INITIALIZED_TIMES 1
 #define TEN 10
@@ -35,7 +36,7 @@ static RLEList RLEList_new_node()
     {
         return NULL;
     }
-    new_node->s = NULL;
+    new_node->s = '\0';
     new_node->times=0;
 	new_node->next = NULL;
 	return new_node;
@@ -69,6 +70,7 @@ static void initialize(RLEList last, char value)
 
 
 //--------func---------------------------------------------------------------------//
+
 
 RLEList RLEListCreate()
 {

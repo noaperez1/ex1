@@ -20,13 +20,15 @@ static void initialize(RLEList last, char value);
 
 RLEList RLEListCreate();
 void RLEListDestroy(RLEList list);
+
 RLEListResult RLEListAppend(RLEList list, char value);
+/*
 int RLEListSize(RLEList list);
 RLEListResult RLEListRemove(RLEList list, int index);
 char RLEListGet(RLEList list, int index, RLEListResult *result);
 RLEListResult RLEListMap(RLEList list, MapFunction map_function);
 char* RLEListExportToString(RLEList list, RLEListResult* result);
-
+*/
 
 //----------definitions---------------------------------------------------------------------//
 //s - the char 
@@ -37,20 +39,25 @@ char* RLEListExportToString(RLEList list, RLEListResult* result);
 int main()
 {
     RLEList one= RLEListCreate();
-    printf("%c", one->s);
-
-
+    RLEList two= RLEListCreate();
+    one->next->next=two;
+    two->next->s='c';
+    RLEList P= last_node (one);
+    printf(" is %c\n", P->s);
+    
+    //RLEListResult X;
+    //RLEListAppend(one,'C');
+    //RLE_LIST_NULL_ARGUMENT = 2
+    //int x = RLEListAppend(NULL,'\0');
+    //printf("%d",X);
+    
+    //printf("%c\n", two->next->next->s);
+   // printf("%d\n", two->next->next->times);
+    
+    RLEListDestroy(one);
 
     return 0;
 }
-
-
-
-
-
-
-
-
 
 
 //------------help_func---------------------------------------------------------------------//
@@ -67,7 +74,7 @@ static RLEList RLEList_new_node()
     {
         return NULL;
     }
-    new_node->s = NULL;
+    new_node->s = '\0';
     new_node->times=0;
 	new_node->next = NULL;
 	return new_node;
@@ -130,19 +137,20 @@ void RLEListDestroy(RLEList list)
     }
 }
 
+
 RLEListResult RLEListAppend(RLEList list, char value)
 {
     RLEList last= last_node(list);
-    if ( last==NULL || value==NULL)
+    if ( last==NULL || value=='\0' )
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if ( last->s == NULL )
+    if ( last->s == '\0' )
     {
-        initialize( last , value );
+        initialize( last, value );
         return RLE_LIST_SUCCESS;
     }
-    else if ( last->s == value)
+    else if ( last->s == value )
     {
         last->times++ ;
         return RLE_LIST_SUCCESS;
@@ -159,7 +167,7 @@ RLEListResult RLEListAppend(RLEList list, char value)
         return RLE_LIST_SUCCESS;
     }
 }
-
+/*
 int RLEListSize(RLEList list)
 {
     if (list==NULL)
@@ -378,3 +386,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         p_arr+=TWO; 
     }
 }
+
+
+*/
