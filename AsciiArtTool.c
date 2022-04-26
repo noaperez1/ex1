@@ -1,6 +1,6 @@
 
 #include "RLEList.h"
-//#include "AsciiArtTool.h"
+#include "AsciiArtTool.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -12,7 +12,11 @@
 
 //------------help_func---------------------------------------------------------------------//
 
-
+typedef struct RLEList_t{
+    char s;
+    int times;
+    struct RLEList_t *next;
+}RLEList_t; 
 //--------func---------------------------------------------------------------------//
 
 RLEList asciiArtRead(FILE* in_stream)
@@ -28,7 +32,6 @@ RLEList asciiArtRead(FILE* in_stream)
         printf("error in memory allocation for new list \n");
         return NULL;
     }
-    in_stream = fopen("file.txt" , "r");
     if (!in_stream)
     {
         printf("error in opening file \n");
@@ -44,16 +47,55 @@ RLEList asciiArtRead(FILE* in_stream)
             i++;
         }
     }
-    fclose(in_stream);
     return list;
+}
+
+RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
+{
+    if(!out_stream|| !list)
+    {
+        printf("error! the func got null file pointer \n");
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+    
+    RLEList temp= list;
+    int len= RLEListSize(list);
+    char* arr =(char*) malloc(len+1);
+    
+    int j=0;
+    while(j<len)
+    {
+        for(int i=0; i< temp->times; i++)
+        {
+            arr[j]=temp->s;
+            j++;
+        } 
+        temp=temp->next;
+    }
+    fputs(arr, out_stream);
+    free(arr);
+    return RLE_LIST_SUCCESS;
 }
 
 RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
+    if(!out_stream|| !list)
+    {
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+    RLEListResult result;
+    char* short_string= RLEListExportToString(list,result);
     
-}
-
-RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream);
-{
+    if(result!=RLE_LIST_SUCCESS || !short_string )
+    {
+        free(short_string); 
+        return RLE_LIST_ERROR;
+    }
     
+    else
+    {
+        fputs(short_string, out_stream);
+        free(short_string);  
+        return RLE_LIST_SUCCESS; 
+    }
 }
