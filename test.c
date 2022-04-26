@@ -43,11 +43,9 @@ int main()
     one->next->next=two;
     two->next->s='c';
     RLEList P= last_node (one);
-    printf(" is %c\n", P->s);
-    
+    printf(" is erg%c\n", P->s);
     
     RLEListDestroy(one);
-
     return 0;
 }
 

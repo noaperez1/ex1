@@ -103,16 +103,16 @@ void RLEListDestroy(RLEList list)
 RLEListResult RLEListAppend(RLEList list, char value)
 {
     RLEList last= last_node(list);
-    if ( last==NULL || value==NULL)
+    if ( last==NULL || value=='\0' )
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if ( last->s == NULL )
+    if ( last->s == '\0' )
     {
-        initialize( last , value );
+        initialize( last, value );
         return RLE_LIST_SUCCESS;
     }
-    else if ( last->s == value)
+    else if ( last->s == value )
     {
         last->times++ ;
         return RLE_LIST_SUCCESS;
