@@ -52,3 +52,8 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
 {
     
 }
+
+RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream);
+{
+    
+}
