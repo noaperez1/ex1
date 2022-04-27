@@ -20,11 +20,6 @@
 
 //------------help_func---------------------------------------------------------------------//
 
-typedef struct RLEList_t{
-    char s;
-    int times;
-    struct RLEList_t *next;
-}RLELis_t;
 
 /*this func creates new empty RLEList node
 is used in RLEListCreate and RLEListAppend */
